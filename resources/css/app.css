@@ -1,0 +1,157 @@
+@import 'tailwindcss';
+
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+/* Mode gelap pakai atribut data-theme di <html>, diatur tombol di navbar. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/*
+ * Identitas "Wulung": kertas krem, tinta bambu wulung (hitam keunguan),
+ * aksen kuning gading bambu kering dan merah tanah. Sudut tegas, garis tipis.
+ */
+@theme {
+    --color-paper: #F3EEE4;
+    --color-card: #FBF8F2;
+    --color-tint: #EAE2D3;
+    --color-ink: #231C20;
+    --color-ink-soft: #5B5053;
+    --color-muted: #877B76;
+    --color-rule: rgba(35, 28, 32, 0.14);
+    --color-amber: #B87425;
+    --color-amber-soft: #F1E1C6;
+    --color-clay: #9E3F2B;
+    --color-on-ink: #F6F1E8;
+    --color-band: #231C20;
+
+    --spacing-container-max: 1200px;
+    --spacing-gutter: 24px;
+
+    --font-display: "Instrument Serif", Georgia, serif;
+    --font-body: "Manrope", system-ui, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+[data-theme="dark"] {
+    --color-paper: #151113;
+    --color-card: #1D181B;
+    --color-tint: #2A2327;
+    --color-ink: #EFE7DA;
+    --color-ink-soft: #BDB2A6;
+    --color-muted: #8E837B;
+    --color-rule: rgba(239, 231, 218, 0.12);
+    --color-amber: #E3A04F;
+    --color-amber-soft: #3A2C1B;
+    --color-clay: #D9735C;
+    --color-on-ink: #151113;
+    --color-band: #EFE7DA;
+    color-scheme: dark;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    background-color: var(--color-paper);
+    background-image:
+        radial-gradient(900px 520px at 0% 0%, color-mix(in srgb, var(--color-amber) 9%, transparent), transparent 60%),
+        radial-gradient(800px 600px at 100% 100%, color-mix(in srgb, var(--color-clay) 7%, transparent), transparent 60%);
+    background-attachment: fixed;
+    transition: background-color .3s ease, color .3s ease;
+}
+
+::selection {
+    background: var(--color-amber);
+    color: #1A1417;
+}
+
+.reveal-on-scroll { opacity: 0; transform: translateY(1.25rem); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+.reveal-on-scroll.is-revealed { opacity: 1; transform: none; }
+
+.prose-calung ul { list-style: none; padding-left: 0; margin: .5rem 0; }
+.prose-calung ul li { position: relative; padding-left: 1.2rem; }
+.prose-calung ul li::before { content: ""; position: absolute; left: 0; top: .7em; width: .5rem; height: 2px; background: var(--color-amber); }
+.prose-calung ol { list-style: decimal; padding-left: 1.4rem; margin: .5rem 0; }
+.prose-calung p { margin-bottom: .6rem; }
+.prose-calung li { margin-bottom: .3rem; }
+.prose-calung a { color: var(--color-amber); text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal-on-scroll { opacity: 1; transform: none; transition: none; }
+    .product-card, .product-card:hover, .btn, .bilah span { transition: none; transform: none; }
+    html { scroll-behavior: auto; }
+}
+
+[data-theme="dark"] .theme-icon-dark,
+[data-theme="light"] .theme-icon-light { display: none; }
+#mobile-menu-btn[aria-expanded="true"] .menu-icon-open,
+#mobile-menu-btn[aria-expanded="false"] .menu-icon-close { display: none; }
+
+.demo-stripe { background: repeating-linear-gradient(-45deg, var(--color-amber) 0 14px, color-mix(in srgb, var(--color-amber) 86%, black) 14px 28px); color: #1A1417; }
+
+/* Komponen di layer components supaya utilitas Tailwind (hidden, md:flex, dll.) tetap menang */
+@layer components {
+.eyebrow {
+    font-family: var(--font-mono);
+    font-size: .72rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+}
+
+/* Bilah calung: deretan batang yang makin pendek, motif pembeda situs ini */
+.bilah { display: flex; align-items: flex-end; gap: 6px; height: 56px; }
+.bilah span {
+    display: block; width: 10px; border-radius: 2px;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--color-amber) 85%, white), var(--color-amber));
+    transform-origin: bottom;
+    transition: transform .4s cubic-bezier(.3,1.6,.5,1), background .3s ease;
+}
+.bilah span:nth-child(1) { height: 100%; }
+.bilah span:nth-child(2) { height: 88%; }
+.bilah span:nth-child(3) { height: 76%; }
+.bilah span:nth-child(4) { height: 64%; }
+.bilah span:nth-child(5) { height: 52%; }
+.bilah span:nth-child(6) { height: 40%; }
+.bilah span:nth-child(7) { height: 30%; }
+.bilah:hover span { transform: scaleY(.86); }
+.bilah:hover span:nth-child(odd) { transform: scaleY(1.06); background: var(--color-clay); }
+
+/* Tombol bersudut tegas */
+.btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
+    padding: .85rem 1.4rem; border-radius: 3px; font-weight: 600; font-size: .95rem;
+    border: 1px solid var(--color-ink); transition: background .25s ease, color .25s ease, transform .25s ease, box-shadow .25s ease;
+}
+.btn-ink { background: var(--color-ink); color: var(--color-paper); }
+.btn-ink:hover { background: var(--color-amber); border-color: var(--color-amber); color: #1A1417; transform: translateY(-2px); box-shadow: 4px 4px 0 var(--color-ink); }
+.btn-line { background: transparent; color: var(--color-ink); }
+.btn-line:hover { background: var(--color-ink); color: var(--color-paper); transform: translateY(-2px); }
+.btn .arrow { transition: transform .25s ease; }
+.btn:hover .arrow { transform: translateX(4px); }
+
+.link-arrow { display: inline-flex; align-items: center; gap: .4rem; font-weight: 600; border-bottom: 1px solid currentColor; padding-bottom: 2px; transition: color .2s ease, gap .2s ease; }
+.link-arrow:hover { color: var(--color-amber); gap: .7rem; }
+
+/* Kartu produk: tanpa bayangan tebal, garis tipis, angka katalog */
+.product-card { transition: transform .35s cubic-bezier(.2,.7,.2,1); }
+.product-card .thumb img { transition: transform .8s cubic-bezier(.2,.7,.2,1), filter .4s ease; }
+.product-card:hover { transform: translateY(-4px); }
+.product-card:hover .thumb img { transform: scale(1.05); filter: saturate(1.1); }
+.product-card .title { background-image: linear-gradient(var(--color-amber), var(--color-amber)); background-size: 0 2px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size .35s ease; }
+.product-card:hover .title { background-size: 100% 2px; }
+
+.nav-link { position: relative; padding: .4rem 0; font-size: .92rem; color: var(--color-ink-soft); transition: color .2s ease; }
+.nav-link::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px; background: var(--color-amber); transform: scaleX(0); transform-origin: left; transition: transform .3s ease; }
+.nav-link:hover { color: var(--color-ink); }
+.nav-link:hover::after, .nav-link[aria-current="page"]::after { transform: scaleX(1); }
+.nav-link[aria-current="page"] { color: var(--color-ink); font-weight: 600; }
+
+/* Filter katalog bergaya tab bergaris bawah */
+.filter-btn { position: relative; padding: .6rem 0; margin-right: 1.6rem; font-size: .95rem; color: var(--color-muted); cursor: pointer; transition: color .2s ease; }
+.filter-btn::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; background: var(--color-amber); transform: scaleX(0); transition: transform .3s ease; }
+.filter-btn:hover { color: var(--color-ink); }
+.filter-btn.is-active { color: var(--color-ink); font-weight: 600; }
+.filter-btn.is-active::after { transform: scaleX(1); }
+
+}
